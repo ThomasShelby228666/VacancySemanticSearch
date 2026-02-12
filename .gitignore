@@ -1,0 +1,14 @@
+# Временные и бинарные файлы
+__pycache__/
+*.pyc
+*.log
+/data
+
+# Эмбеддинги и индексы
+embeddings/
+index/
+data/vacancies.db
+
+# Виртуальное окружение
+venv/
+.env
