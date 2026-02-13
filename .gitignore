@@ -7,8 +7,7 @@ __pycache__/
 # Эмбеддинги и индексы
 embeddings/
 index/
-data/vacancies.db
 
 # Виртуальное окружение
-venv/
+.venv
 .env

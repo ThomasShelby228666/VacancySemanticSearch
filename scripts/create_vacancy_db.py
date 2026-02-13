@@ -7,13 +7,14 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
     handlers=[
-        logging.FileHandler("vacancy_generator.log"),
+        logging.FileHandler("vacancy_generator.log", encoding="utf-8"),
+        logging.StreamHandler()
     ]
 )
 logger = logging.getLogger(__name__)
 
 DB_PATH = "../data/vacancies.db"
-NUM_VACANCIES = 10
+NUM_VACANCIES = 200
 USE_RUSSIAN = True
 
 if USE_RUSSIAN:
@@ -111,7 +112,7 @@ def main():
         raise
 
     except Exception as e:
-        logger.error(f"Непридвиденная ошибка: {e}")
+        logger.error(f"Непредвиденная ошибка: {e}")
         raise
 
     finally:
