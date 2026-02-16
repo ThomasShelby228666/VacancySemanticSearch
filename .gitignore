@@ -11,3 +11,4 @@ index/
 # Виртуальное окружение
 .venv
 .idea
+.gradio
