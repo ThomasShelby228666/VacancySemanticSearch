@@ -3,6 +3,7 @@ import random
 import os
 import logging
 
+# Настройка логирования
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
@@ -13,10 +14,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-DB_PATH = "../data/vacancies.db"
-NUM_VACANCIES = 200
-USE_RUSSIAN = True
+# Конфигурация
+DB_PATH = "../data/vacancies.db"    # Относительный путь к базе данных
+NUM_VACANCIES = 200     # Количество генерируемых вакансий
+USE_RUSSIAN = True  # True - русские описания, False - английские
 
+# Синтетическая генерация данных на русском языке
 if USE_RUSSIAN:
     TITLES = [
         "Data Scientist", "ML-инженер", "Аналитик данных", "Backend-разработчик",
@@ -42,6 +45,7 @@ if USE_RUSSIAN:
         "C++, OpenCV", "LangChain, LLM", "FAISS, Elasticsearch",
         "Git, GitLab CI", "AWS, GCP", "Linux, Bash", "FastAPI, Flask"
     ]
+# Синтетическая генерация данных на английском языке
 else:
     TITLES = [
         "Data Scientist", "ML engineer", "Data Analyst", "Backend developer",
@@ -68,27 +72,53 @@ else:
         "Git, GitLab CI", "AWS, GCP", "Linux, Bash", "FastAPI, Flask"
     ]
 
-def generate_vacancy(vacancy_id):
+def generate_vacancy(vacancy_id: int) -> tuple:
+    """
+    Генерирует одну вакансию со случайными данными.
+    Args:
+        vacancy_id (int): Уникальный идентификатор вакансии
+    Returns:
+        tuple: Кортеж (id, title, description)
+    Example:
+        >>> generate_vacancy(1)
+        (1, 'ML-инженер', 'Компания ищет специалиста с опытом в PyTorch...')
+    """
     title = random.choice(TITLES)
     tech = random.choice(TECH_STACK)
     description = random.choice(DESCRIPTIONS).format(tech=tech)
     return (vacancy_id, title, description)
 
-def main():
+def main() -> None:
+    """
+    Основная функция создания базы данных вакансий.
+    Выполняет следующие шаги:
+    1. Проверяет/создаёт папку data/
+    2. Удаляет существующую БД (если есть)
+    3. Создаёт новую БД с таблицей vacancies
+    4. Генерирует указанное количество вакансий
+    5. Сохраняет их в БД
+    Raises:
+        sqlite3.Error: При ошибках работы с SQLite
+        Exception: При любых других непредвиденных ошибках
+    """
     logger.info("Начало синтетической генерации базы данных вакансий")
 
+    # Создание папки для БД
     os.makedirs("../data", exist_ok=True)
 
+    # Удаление существующей БД
     if os.path.exists(DB_PATH):
         logger.info(f"Удаление существующей БД: {DB_PATH}")
         os.remove(DB_PATH)
         logger.debug("Файл БД успешно удален")
 
     try:
+        # Подключение к БД
         logger.debug(f"Подключение к БД: {DB_PATH}")
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
 
+        # Создание таблицы
         logger.info("Создание таблицы vacancies")
         cursor.execute("""
             CREATE TABLE vacancies (
@@ -98,12 +128,15 @@ def main():
         """)
         logger.debug("Таблица vacancies создана успешно")
 
+        # Генерация вакансий
         logger.info(f"Генерация {NUM_VACANCIES} вакансий")
         vacancies = [generate_vacancy(i) for i in range(1, NUM_VACANCIES + 1)]
 
+        # Вставка вакансий
         logger.debug(f"Вставка {NUM_VACANCIES} сгенерированных вакансий в таблицу")
         cursor.executemany("INSERT INTO vacancies (id, title, description) VALUES (?, ?, ?)", vacancies)
 
+        # Сохранение изменений
         conn.commit()
         logger.info(f"Успешно добавлено {cursor.rowcount} записей в БД по пути: {DB_PATH}")
 
@@ -116,6 +149,7 @@ def main():
         raise
 
     finally:
+        # Закрытие соединения
         if "conn" in locals():
             conn.close()
             logger.debug("Соединение с БД закрыто")
