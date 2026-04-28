@@ -35,9 +35,6 @@ def load_resources() -> Tuple[SentenceTransformer, faiss.Index, List[int]]:
             - Список ID вакансий в порядке соответствия индексу
     Raises:
         FileNotFoundError: Если любой из необходимых файлов не найден
-    Example:
-        >>> model, index, vacancy_ids = load_resources()
-        >>> print(f"Загружено {len(vacancy_ids)} вакансий")
     """
     logger.info("Загрузка ресурсов для поиска")
 
@@ -85,10 +82,6 @@ def semantic_search(query: str, model: SentenceTransformer, index: faiss.index,
         k (int): Количество результатов для возврата (по умолчанию TOP_K)
     Returns:
         List[int]: Список ID найденных вакансий
-    Example:
-        >>> ids = semantic_search("Python разработчик", model, index, vacancy_ids)
-        >>> print(ids)
-        [42, 15, 73, 91, 28]
     """
     # Генерация эмбеддинга для запроса
     query_embedding = model.encode([query])
@@ -125,10 +118,6 @@ def get_vacancies_by_ids(ids: List[int], db_path: str) -> List[Tuple]:
         List[Tuple]: Список кортежей (id, title, description) в порядке запрошенных ID
     Raises:
         sqlite3.Error: При ошибках работы с SQLite
-    Example:
-        >>> vacancies = get_vacancies_by_ids([42, 15], "data/vacancies.db")
-        >>> for vid, title, desc in vacancies:
-        ...     print(f"{vid}: {title}")
     """
     if not ids:
         logger.warning("Нет ID для загрузки из БД")
@@ -167,8 +156,6 @@ def print_results(vacancies: List[Tuple], query: str) -> None:
     Args:
         vacancies (List[Tuple]): Список вакансий (id, title, description)
         query (str): Исходный поисковый запрос
-    Example:
-        >>> print_results(vacancies, "Python разработчик")
     """
     print("=" * 50)
     print(f"Результаты поиска: '{query}'")

@@ -79,9 +79,6 @@ def generate_vacancy(vacancy_id: int) -> tuple:
         vacancy_id (int): Уникальный идентификатор вакансии
     Returns:
         tuple: Кортеж (id, title, description)
-    Example:
-        >>> generate_vacancy(1)
-        (1, 'ML-инженер', 'Компания ищет специалиста с опытом в PyTorch...')
     """
     title = random.choice(TITLES)
     tech = random.choice(TECH_STACK)

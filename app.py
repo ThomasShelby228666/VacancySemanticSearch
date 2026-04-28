@@ -36,15 +36,12 @@ def search_interface(query: str) -> str:
        3. Получение полной информации о вакансиях из БД
        4. Форматирование результатов в Markdown
        5. Возврат отформатированного текста
-    Example:
-       >>> search_interface("Python разработчик")
-       "**1. Python Developer**\n\nТребуется опытный Python разработчик..."
     """
     logger.info(f"Поиск вакансий по запросу: {query}")
 
     # Проверка на пустой запрос
     if not query.strip():
-        return "🔍 Введите запрос!"
+        return "Введите запрос!"
 
     try:
         # Выполнение семантического поиска
@@ -52,7 +49,7 @@ def search_interface(query: str) -> str:
 
         # Проверка наличия результатов
         if not found_ids:
-            return "❌ Ничего не найдено."
+            return "Ничего не найдено."
 
         # Получение полных данных о вакансиях
         vacancies = get_vacancies_by_ids(found_ids, DB_PATH)
@@ -67,7 +64,7 @@ def search_interface(query: str) -> str:
 
     except Exception as e:
         logger.error(f"Ошибка при поиске вакансий: {e}")
-        return "❌ Возникла ошибка при поиске вакансий."
+        return "Возникла ошибка при поиске вакансий."
 
 # Создание Gradio интерфейса
 demo = gr.Interface(
@@ -76,7 +73,7 @@ demo = gr.Interface(
         label="🔎 Опишите желаемую работу",
         placeholder="Например: «Хочу работать data scientist с опытом в NLP»"
     ),
-    outputs=gr.Markdown(label="🎯 Результаты поиска"),
+    outputs=gr.Markdown(label="Результаты поиска"),
     title="Семантический поиск по вакансиям",
     description="Поиск по смыслу, а не по ключевым словам",
     examples=[
@@ -84,8 +81,8 @@ demo = gr.Interface(
         ["Разработчик Python для backend-систем"],
         ["Аналитик данных с навыками визуализации"]
     ],
-    submit_btn="🔍 Найти вакансии", # Кастомная кнопка отправки
-    clear_btn="🗑️ Очистить", # Кастомная кнопка очистки
+    submit_btn="Найти вакансии", # Кастомная кнопка отправки
+    clear_btn="🗑Очистить", # Кастомная кнопка очистки
     flagging_mode="never" # Отключение кнопки Flag (если включить - появится возможность скачивать в csv выводимый список вакансий)
 )
 

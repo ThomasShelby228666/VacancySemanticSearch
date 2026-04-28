@@ -37,9 +37,6 @@ def load_vacancies(db_path: str) -> Tuple[List[str], List[str]]:
     Raises:
         FileNotFoundError: Если файл БД не существует
         sqlite3.Error: При ошибках работы с SQLite
-    Example:
-        >>> ids, texts = load_vacancies("../data/vacancies.db")
-        >>> print(f"Загружено {len(ids)} вакансий")
     """
     logger.info(f"Чтение вакансий из: {db_path}")
 
@@ -82,10 +79,6 @@ def generate_embeddings(texts: List[str], model: str) -> np.ndarray:
         np.ndarray: Массив эмбеддингов размерностью (n_texts, embedding_dim)
     Raises:
         Exception: При ошибках загрузки модели или создании эмбеддингов
-    Example:
-        >>> embeddings = generate_embeddings(["Python разработчик"], "paraphrase-multilingual-MiniLM-L12-v2")
-        >>> print(embeddings.shape)
-        (1, 384)
     """
     logger.info(f"Генерация эмбеддингов для {len(texts)} текстов с помощью модели {model}")
 
@@ -120,8 +113,6 @@ def save_embeddings(embeddings: np.ndarrray, ids: List[int], emb_file: str, id_f
            id_file (str): Путь для сохранения маппинга ID (.pkl)
        Raises:
            Exception: При ошибках сохранения файлов
-       Example:
-           >>> save_embeddings(embeddings, [1,2,3], "embeddings.npy", "id_map.pkl")
        """
     logger.info(f"Сохранение эмбеддингов в {emb_file}")
 
@@ -150,8 +141,6 @@ def build_faiss_index(embeddings: np.ndarray, index_file: str) -> None:
         index_file (str): Путь для сохранения FAISS индекса
     Raises:
         Exception: При ошибках построения или сохранения индекса
-    Example:
-        >>> build_faiss_index(embeddings, "faiss_vacancy.index")
     """
     logger.info("Построение FAISS индекса")
 
