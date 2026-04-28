@@ -70,8 +70,8 @@ def load_resources() -> Tuple[SentenceTransformer, faiss.Index, List[int]]:
 
     return model, index, vacancy_ids
 
-def semantic_search(query: str, model: SentenceTransformer, index: faiss.index,
-                    vacancy_ids: List[int], k: int = TOP_K):
+def semantic_search(query: str, model: SentenceTransformer, index: faiss.Index,
+                    vacancy_ids: List[int], k: int = TOP_K) -> List[int]:
     """
     Выполняет семантический поиск вакансий по текстовому запросу.
     Args:

@@ -70,7 +70,7 @@ def search_interface(query: str) -> str:
 demo = gr.Interface(
     fn=search_interface,  # Функция обработки запросов
     inputs=gr.Textbox(
-        label="🔎 Опишите желаемую работу",
+        label="Опишите желаемую работу",
         placeholder="Например: «Хочу работать data scientist с опытом в NLP»"
     ),
     outputs=gr.Markdown(label="Результаты поиска"),
